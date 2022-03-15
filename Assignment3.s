@@ -43,7 +43,7 @@ incq %rbx
 movq $Testing, %rdi
 call printf
 cmpq -16(%rbp), %rbx
-jl  loop1
+jl  POW
     
 #pushq %rbp              # Prologue: push the base pointer  
 #movq %rsp, %rbp         # Move stack pointer to base pointer 
