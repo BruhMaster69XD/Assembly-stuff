@@ -36,16 +36,35 @@ movq -16 (%rbp), %rsi
 
 
 movq $0, %rbx
+POW:                   #Beginning of foo subroutine
 
-loop1:
 incq %rbx
 
 movq $Testing, %rdi
 call printf
 cmpq -16(%rbp), %rbx
 jl  loop1
+    
+#pushq %rbp              # Prologue: push the base pointer  
+#movq %rsp, %rbp         # Move stack pointer to base pointer 
+#subq $16, %rsp          #reserve some space on the stack for variable
 
-call POW               #calls the subroutine POW
+
+movq -16(%rbp), %rax    #Move return value into RAX 
+movq %rbp, %rsp         #epilogue: clears the local variables 
+popq %rbp               #resets the callers base pointer 
+
+ret                     #returns user from subroutine 
+
+#loop1:
+#incq %rbx
+
+#movq $Testing, %rdi
+#call printf
+#cmpq -16(%rbp), %rbx
+#jl  loop1
+
+#call POW               #calls the subroutine POW
 
 end:                    # section for ending the code 
 mov     $0, %rdi        # Load the exit code
@@ -57,22 +76,4 @@ call    exit            # Actually exit the program
 
 
 
-POW:                   #Beginning of foo subroutine
-    
-pushq %rbp              # Prologue: push the base pointer  
-movq %rsp, %rbp         # Move stack pointer to base pointer 
-subq $16, %rsp          #reserve some space on the stack for variable
 
-
-
-
-
-
-
-
-
-movq -16(%rbp), %rax    #Move return value into RAX 
-movq %rbp, %rsp         #epilogue: clears the local variables 
-popq %rbp               #resets the callers base pointer 
-
-ret                     #returns user from subroutine 
