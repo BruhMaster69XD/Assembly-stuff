@@ -4,8 +4,9 @@
     Placeholder: .asciz " %ld"                                                                          #placeholder for more than number printing
     MyExponent: .asciz " The exponent is : %ld"                                                   #myage string
     Prompt1: .asciz " Please enter Base : \n"   
-    Prompt2: .asciz "Please enter exponent: \n "
-    Testing: .asciz "Babylon\n"
+    Prompt2: .asciz "Please enter exponent:\n "
+     Prompt3: .asciz "Please enter Total: \n "
+    Testing: .asciz "Your total is: %ld\n"
     
    
 .global main
@@ -24,7 +25,7 @@ leaq -8(%rbp), %rsi     # Allows the loading of effective address which is in th
 movq $Placeholder, %rdi # loads the argument for scanf 
 movq $0, %rax           # no vectors needed in the stack 
 call scanf              # call scanf
-movq -8 (%rbp), %rsi    #moves the input back into stack using %rsi
+
          
 movq $Prompt2, %rdi
 call printf
@@ -32,19 +33,39 @@ leaq -16(%rbp), %rsi     # Allows the loading of effective address which is in t
 movq $Placeholder, %rdi # loads the argument for scanf 
 movq $0, %rax           # no vectors needed in the stack 
 call scanf
-movq -16 (%rbp), %rsi
+
+
+
+
+movq -8(%rbp), %r10
+movq -16(%rbp),%r11
+movq $1, %r12
+movq %r12, -32(%rbp)
+movq -32(%rbp),%r12
 
 
 movq $0, %rbx
+
+
 POW:                   #Beginning of foo subroutine
 
 incq %rbx
 
-movq $Testing, %rdi
-call printf
+
+
+imulq %r10, %r12
+
+
+movq %r12, -32(%rbp)
+
 cmpq -16(%rbp), %rbx
 jl  POW
-    
+
+movq -32(%rbp), %rsi
+movq $Testing, %rdi
+movq $0, %rax
+call printf
+
 #pushq %rbp              # Prologue: push the base pointer  
 #movq %rsp, %rbp         # Move stack pointer to base pointer 
 #subq $16, %rsp          #reserve some space on the stack for variable
@@ -66,14 +87,8 @@ ret                     #returns user from subroutine
 
 #call POW               #calls the subroutine POW
 
+
 end:                    # section for ending the code 
 mov     $0, %rdi        # Load the exit code
 call    exit            # Actually exit the program 
-
-
-
-
-
-
-
 
