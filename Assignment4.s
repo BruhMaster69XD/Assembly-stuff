@@ -33,7 +33,15 @@ ret
 
 PrintFactorial:  #Beginning of foo subroutine
 
-call Factorial  
+call Factorial
+#START OF SPACE FOR FACTORIAL FUNCTION 
+movq -8(%rbp), %r9
+
+
+
+
+
+#END OF SPACE FOR FACTORIAL FUNCTION 
 movq -8 (%rbp), %rsi    # move this incremented variable back onto rsi 
 movq $TheFactorial, %rdi       # load the function that needs to be printed 
 movq $0, %rax           #stack does not have any vectors 
