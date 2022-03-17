@@ -20,15 +20,15 @@ call    printf          #print the string
 movq $0, %rax           #no vector registers in use for printf
 movq $Prompt1, %rdi
 call    printf
-subq $16, %rsp          #reserve some space on the stack for variable
+subq $16, %rsp          # reserve some space on the stack for variable
 leaq -8(%rbp), %rsi     # Allows the loading of effective address which is in the first variable 
 movq $Placeholder, %rdi # loads the argument for scanf 
 movq $0, %rax           # no vectors needed in the stack 
 call scanf              # call scanf
 
          
-movq $Prompt2, %rdi
-call printf
+movq $Prompt2, %rdi     # load the address of the string
+call printf             # print the string
 leaq -16(%rbp), %rsi     # Allows the loading of effective address which is in the first variable 
 movq $Placeholder, %rdi # loads the argument for scanf 
 movq $0, %rax           # no vectors needed in the stack 
