@@ -37,34 +37,34 @@ call scanf
 
 
 
-movq -8(%rbp), %r10
-movq -16(%rbp),%r11
-movq $1, %r12
-movq %r12, -32(%rbp)
-movq -32(%rbp),%r12
+movq -8(%rbp), %r10     # move base to register r10
+movq -16(%rbp),%r11     # move exponent to register r11
+movq $1, %r12           # assign 1 to "total" in r12
+movq %r12, -32(%rbp)    # move r12 on to the stack
+movq -32(%rbp),%r12     # move total back to r12
 
 
-movq $0, %rbx
+movq $0, %rbx           # assign 0 to "i" (for the loop)
 
 
-POW:                   #Beginning of foo subroutine
+POW:                    #Beginning of foo subroutine
 
-incq %rbx
-
-
-
-imulq %r10, %r12
+incq %rbx               # increment i 
 
 
-movq %r12, -32(%rbp)
 
-cmpq -16(%rbp), %rbx
-jl  POW
+imulq %r10, %r12        # multiply the base with the total
 
-movq -32(%rbp), %rsi
-movq $Testing, %rdi
-movq $0, %rax
-call printf
+
+movq %r12, -32(%rbp)    # move the new total back on the stack
+
+cmpq -16(%rbp), %rbx    # compare if i < exponent
+jl  POW                 # jump back to POW
+
+movq -32(%rbp), %rsi    # move total to rsi
+movq $Testing, %rdi     # load the address of the string
+movq $0, %rax           # no vectors needed in the stack
+call printf             # print total
 
 #pushq %rbp              # Prologue: push the base pointer  
 #movq %rsp, %rbp         # Move stack pointer to base pointer 
